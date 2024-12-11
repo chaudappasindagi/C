@@ -1,0 +1,723 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
+{\*\generator Riched20 10.0.22621}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\qc\f0\fs28\lang9 EXPERIMENT NO:01\par
+
+\pard\sa200\sl276\slmult1 /*\par
+\par
+PROBLEM STATEMENT:\par
+Implement a class Complex which represents the Complex Number data type. Implement the\par
+following operations:\par
+1.Constructor (including a default constructor which creates the complex number 0+0i).\par
+2.Overloaded operator+ to add two complex numbers.\par
+3.Overloaded operator* to multiply two complex numbers.\par
+4.Overloaded << and >> to print and read Complex Numbers.\par
+*/\par
+INPUT:\par
+#include <iostream>\par
+using namespace std;\par
+class complex //class name complex is declared\par
+\{\par
+float realp,imagp;\par
+public:\par
+complex() //default constructor\par
+\{\par
+realp=0;\par
+imagp=0;\par
+\}\par
+complex operator+(complex &); //for addition of two complex nos\par
+complex operator*(complex &); //for multiplication of two complex nos\par
+complex(float,float); //parameterized constructor\par
+friend istream &operator>>(istream &,complex &);\par
+friend ostream &operator<<(ostream &,complex &);\par
+\};\par
+complex::complex(float x,float y) //parameterized constructor definition\par
+\{\par
+realp=x;\par
+imagp=y;\par
+\}\par
+//function to accept values of real and imag parts of complex no\par
+istream &operator>>(istream &din,complex &c)\par
+\{\par
+cout<<"Enter real part of complex number 2: ";\par
+din>>c.realp;\par
+cout<<"\\nEnter imaginary part of complex number 2: ";\par
+din>>c.imagp;\par
+return din;\par
+\}\par
+//functions to display complex nos\par
+ostream &operator<<(ostream &dout , complex &c)\par
+\{\par
+dout<<c.realp<<" + "<<c.imagp<<"i";\par
+dout<<endl;\par
+return dout;\par
+\}\par
+//function to add two complex nos\par
+complex complex::operator+(complex &c)\par
+\{\par
+complex temp;\par
+temp.realp=realp + c.realp;\par
+temp.imagp=imagp + c.imagp;\par
+return temp;\par
+\}\par
+//function to multiply two complex nos\par
+complex complex::operator*(complex &c)\par
+\{\par
+complex mul;\par
+mul.realp=(realp*c.realp) - ( imagp*c.imagp);\par
+mul.imagp=(imagp*c.realp) + (realp*c.imagp);\par
+return mul;\par
+\}\par
+int main()\par
+\{\par
+complex c2,c3;\par
+complex c1(1.2,2.2);\par
+cout<<"Complex no 1 is:"<<c1;\par
+cout<<"Enter complex no 2:\\n";\par
+cin>>c2;\par
+cout<<"Complex number 1 is :";\par
+cout<<c1;\par
+cout<<"Complex number 2 is :";\par
+cout<<c2;\par
+cout<<"Complex number 3 is :";\par
+cout<<c3;\par
+cout<<"\\nAddition of two complex numbers is: ";\par
+c3=c1+c2;\par
+cout<<c3;\par
+cout<<"\\nMultiplication of two complex number is: ";\par
+c3=c1*c2;\par
+cout<<c3; //display value of c3\par
+return 0;\par
+\}\par
+\par
+/*\par
+OUTPUT:\par
+Complex no 1 is:1.2 + 2.2i\par
+Enter complex no 2:\par
+Enter real part of complex number 2: 1\par
+\par
+Enter imaginary part of complex number 2: 2\par
+Complex number 1 is :1.2 + 2.2i\par
+Complex number 2 is :1 + 2i\par
+Complex number 3 is :0 + 0i\par
+\par
+Addition of two complex numbers is: 2.2 + 4.2i\par
+\par
+Multiplication of two complex number is: -3.2 + 4.6i\par
+\par
+
+\pard\sa200\sl276\slmult1\qc EXPERIMENT NO:02\par
+
+\pard\sa200\sl276\slmult1 Problem statement:\par
+Develop an object oriented program in C++ to create a database of student information\par
+system containing the following information: Name, Roll number, Class, division, Date of\par
+Birth, Blood group, Contact address, telephone number, driving license no. etc Construct the\par
+database with suitable member functions for initializing and destroying the data viz\par
+constructor, default constructor, Copy constructor, destructor, static member functions, friend\par
+class, this pointer, inline code and dynamic memory allocation operators-new and delete.\par
+INPUT:\par
+#include <iostream>\par
+#include<string.h>\par
+#include<iomanip>\par
+using namespace std;\par
+class db\par
+\{\par
+int roll;\par
+char name[20];\par
+char Class[10];\par
+char Div[10];\par
+char dob[10];\par
+char bg[3],contact[10];\par
+char phone[10],license[12];\par
+public:\par
+static int stdno;\par
+static void count()\par
+\{\par
+cout<<"\\nNo. of objects created: "<<stdno;\par
+\}\par
+void fin()\{cout<<"\\nInline Function!";\}\par
+db()\par
+\{\par
+roll=0;\par
+strcpy(name,"Sachin");\par
+strcpy(Class,"I");\par
+strcpy(Div,"A");\par
+strcpy(dob,"11/11/1111");\par
+strcpy(bg,"A");\par
+strcpy(contact,"city");\par
+strcpy(phone,"9000000000");\par
+strcpy(license,"A0101010");\par
+++stdno;\par
+\}\par
+db(db *ob)\par
+\{\par
+strcpy(name,ob->name);\par
+strcpy(dob,ob->dob);\par
+strcpy(Class,ob->Class);\par
+strcpy(Div,ob->Div);\par
+strcpy(bg,ob->bg);\par
+strcpy(contact,ob->contact);\par
+strcpy(phone,ob->phone);\par
+strcpy(license,ob->license);\par
+++stdno;\par
+\}\par
+void getdata()\par
+\{\par
+cout<<"\\n\\nEnter:name,roll,Class,Div,Dob,bg,contact,phone,license \\n\\n\\n";\par
+cin>>name>>roll>>Class>>Div>>dob>>bg>>contact>>phone>>license;\par
+\}\par
+friend void display(db d);\par
+~db()\par
+\{\par
+cout<<"\\n\\n"<<this->name<<"(Object) is destroyed!";\par
+\}\par
+\};\par
+void display(db d)\par
+\{\par
+cout<<"\\n"<<setw(12)<<d.name<<setw(5)<<d.roll<<setw(4)<<d.Class<<setw(3)<<d.Div<<setw(12)<<\par
+d.dob<<setw(4)<<d.bg<<setw(12)<<d.contact<<" "<<setw(12)<<d.phone<<" "<<setw(12)<<"\par
+"<<d.license;\par
+\}\par
+int db::stdno;\par
+int main()\par
+\{\par
+int n,i;\par
+db d1,*ptr[5];\par
+cout<<"\\nDefault values:";\par
+display(d1);\par
+d1.getdata();\par
+display(d1);\par
+db d2(&d1);\par
+cout<<"\\n\\nUse of copy constructor :\\n";\par
+display(d2);\par
+cout<<"\\nHow many objects u want to create?:";\par
+cin>>n;\par
+for(i=0;i<n;i++)\par
+\{\par
+ptr[i]=new db();\par
+ptr[i]->getdata();\par
+\}\par
+cout<<"\\n"<<setw(12)<<"name"<<setw(5)<<"roll"<<setw(4)<<"Class"<<setw(4)<<"Div"<<setw(12)<<\par
+"dob"<<setw(4)<<"bg"<<setw(12)<<"contact"<<setw(12)<<"phone"<<setw(12)<<"license";\par
+for(i=0;i<n;i++)\par
+display(*ptr[i]);\par
+db::count();\par
+for(i=0;i<n;i++)\par
+\{\par
+delete(ptr[i]);\par
+\}\par
+cout<<"\\nObjects deleted!" ;\par
+return 0;\par
+\}\par
+
+\pard\sa200\sl276\slmult1\qc\par
+EXPERIMENT NO:03\par
+
+\pard\sa200\sl276\slmult1 Imagine a publishing company which does marketing for book and audio cassette\par
+versions. Create a class publication that stores the title (a string) and price (type float) of a\par
+publication.\par
+From this class derive two classes: book, which adds a page count (type int), and tape, which adds a\par
+playing time in minutes (type float).\par
+Write a program that instantiates the book and tape classes, allows user to enter data and displays\par
+the data members. If an exception is caught, replace all the data member values with zero values.\par
+INPUT:\par
+#include<iostream.h>\par
+class publication\par
+\{\par
+public:\par
+string title;\par
+float price;\par
+public:\par
+void getdata()\par
+\{\par
+cout<<"Enter title of publication";\par
+cin>>title;\par
+cout<<"Enter price of publication";\par
+cin>>price;\par
+\}\par
+void putdata()\par
+\{\par
+cout <<"Publication title:"<< title<< endl;\par
+cout<<"Publication price:"<< price <<endl;\par
+\}\par
+\};\par
+class book :public publication\par
+\{\par
+public:\par
+int pagecount;\par
+public:\par
+void getdata()\par
+\{\par
+publication::getdata(); //call publication class function to get data\par
+cout <<" Enter Book Page Count :"; //Acquire book datafrom user\par
+cin>> pagecount;\par
+\}\par
+void putdata()\par
+\{\par
+publication::putdata();//show publication data\par
+cout <<"book page count"<< pagecount<<endl;//show book data\par
+\}\par
+\};\par
+class tape:public publication\par
+\{\par
+private:\par
+float ptime;\par
+public:\par
+void getdata()\par
+\{\par
+publication::getdata();\par
+cout<<"Enter tape s playing time(in min)";\par
+cin>>ptime;\par
+\}\par
+void putdata()\par
+\{\par
+publication::putdata();\par
+cout<<"tapes playing time" <<ptime<<endl;\par
+\}\par
+\};\par
+int main()\par
+\{\par
+book b;\par
+tape t;\par
+b.getdata();\par
+t.getdata();\par
+b.putdata();\par
+t.putdata();\par
+return 0;\par
+\}\par
+\par
+
+\pard\sa200\sl276\slmult1\qc EXPERIMENT NO:O4\par
+
+\pard\sa200\sl276\slmult1 Write a C++ program that creates an output file, writes information to it, closes the file and\par
+open it again as an input file and read the information from the file.\par
+*/\par
+INPUT:\par
+#include<iostream>\par
+#include<fstream>\par
+using namespace std;\par
+\par
+class Employee\par
+\{\par
+\~\~\~ char Name[20];\par
+\~\~\~ int ID;\par
+\~\~\~ double salary;\par
+\~\~\~ public:\par
+\~\~\~ \~\~\~ void accept()\par
+\~\~\~ \~\~\~ \{\par
+\~\~\~ \~\~\~ \~\~\~ cin>>Name;\par
+\~\~\~ \~\~\~ \~\~\~ cin>>ID;\par
+\~\~\~ \~\~\~ \~\~\~ cin>>salary;\par
+\~\~\~ \~\~\~ \}\par
+\~\~\~ \~\~\~ void display()\par
+\~\~\~ \~\~\~ \{\par
+\~\~\~ \~\~\~ \~\~\~ cout<<"\\n Enter Name:"<<Name;\par
+\~\~\~ \~\~\~ \~\~\~ cout<<"\\n Enter Id:"<<ID;\par
+\~\~\~ \~\~\~ \~\~\~ cout<<"\\n Enter Salary:"<<salary;\par
+\~\~\~ \~\~\~ \}\par
+\};\par
+\~\~\~ \~\~\~\par
+int main()\par
+\{\par
+\~\~\~ Employee o[5];\par
+\~\~\~ fstream f;\par
+\~\~\~ int i,n;\par
+\~\~\~\par
+\~\~\~ f.open("b16.txt");\par
+\~\~\~ cout<<"\\n How many employee information do you need to store?";\par
+\~\~\~ cin>>n;\par
+\~\~\~ cout<<"\\n Enter information of employee in this format(NAME/ID/SALARY)";\par
+\~\~\~ for(i=0;i<n;i++)\par
+\~\~\~ \{\par
+\~\~\~ \~\~\~ cout<<"\\n Enter information of:"<<i<<"\\n Employee";\par
+\~\~\~ \~\~\~ o[i].accept();\par
+\~\~\~ \~\~\~ f.write((char*)&o[i],sizeof o[i]);\par
+\~\~\~ \}\par
+\~\~\~\par
+\~\~\~ f.close();\par
+\~\~f.open("b16.txt");\~\~\~ cout<<"\\n Information of Employees is as follows:";\par
+\~\~\~ for(i=0;i<n;i++)\par
+\~\~\~ \{\par
+\~\~\~ \~\~\~ f.write((char*)&o[i],sizeof o[i]);\par
+\~\~\~ \~\~\~ o[i].display();\par
+\~\~\~ \}\par
+\~\~\~ f.close();\par
+\par
+\~ \~\~\~\~ \~return 0;\par
+\}\par
+\par
+output-\par
+How many employee information do you need to store?3\par
+\par
+\~Enter information of employee in this format(NAME/ID/SALARY)\par
+\~Enter information of:0\par
+\~Employee xyz 123 50000\par
+\par
+\~Enter information of:1\par
+\~Employee abc 234 6000\par
+\par
+\~Enter information of:2\par
+\~Employee lmn 565 70000\par
+\par
+\~Information of Employees is as follows:\par
+\~Enter Name:xyz\par
+\~Enter Id:123\par
+\~Enter Salary:50000\par
+\~Enter Name:abc\par
+\~Enter Id:234\par
+\~Enter Salary:6000\par
+\~Enter Name:lmn\par
+\~Enter Id:565\par
+\~Enter Salary:70000\par
+\par
+
+\pard\sa200\sl276\slmult1\qc EXPERIMENT NO:05\par
+
+\pard\sa200\sl276\slmult1 Write a function template selection Sort. Write a program that inputs,\par
+sorts and outputs an integer array and a float array.\par
+INPUT:\par
+#include<iostream>\par
+using namespace std;\par
+#define Size 10\par
+int n;\par
+template<class T>\par
+void selection(T A[Size])\par
+\{\par
+\~ \~ \~ \~ \~ \~int i, j,Min;\par
+\~ \~ \~ \~ \~ \~ T temp;\par
+\~ \~ \~ \~ \~ \~ for (i = 0; i <= n - 2; i++)\par
+\~ \~ \~ \~ \~ \~ \{\par
+\~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~Min = i;\par
+\~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~for (j = i + 1; j <=n - 1; j++)\par
+\~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \{\par
+\~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ if(A[j]<A[Min])\par
+\~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ Min= j;\par
+\~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \}\par
+\~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ temp = A[i];\par
+\~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ A[i] = A[Min];\par
+\~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ A[Min] = temp;\par
+\~ \~ \~ \~ \~ \~ \}\par
+\~ \~ \~ \~ \~ \~ cout << "\\n The sorted List is ...\\n";\par
+\~ \~ \~ \~ \~ \~ for (i = 0; i<n; i++)\par
+\~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ \~ cout<<"\\t"<<A[i];\par
+\~ \~ \~ int main()\par
+\par
+\{\par
+\~ \~ \~ \~ \~ \~ int i, A[Size];\par
+\~ \~ \~ \~ \~ \~ float B[Size];\par
+\~ \~ \~ \~ \~ \~cout<<"\\n\\t\\t Selection Sort\\n ";\par
+\~ \~ \~ \~ \~ \~ cout << "\\n\\t Handling Integer elements ";\par
+\~ \~ \~ \~ \~ \~ cout<<"\\n How many elements are there ? ";\par
+\~ \~ \~ \~ \~ \~cin>>n;\par
+\~ \~ \~ \~ \~ \~ cout<<"\\n Enter the integer elements\\n ";\par
+\~ \~ \~ \~ \~ \~for (i = 0; i<n; i++)\par
+\~ \~ \~ \~ \~ \~cin>>A[i];\par
+\~ \~ \~ \~ \~ \~ selection(A);\par
+\~ \~ \~ \~ \~ \~ cout << "\\n\\t Handling Float elements ";\par
+\~ \~ \~ \~ \~ \~ cout << "\\n How many elements are there ? ";\par
+\~ \~ \~ \~ \~ \~ cin >> n;\par
+\~ \~ \~ \~ \~ \~ cout << "\\n Enter the float elements\\n ";\par
+\~ \~ \~ \~ \~ \~for (i = 0; i<n; i++)\par
+\~ \~ \~ \~ \~ \~ cin >> B[i];\par
+\~ \~ \~ \~ \~ \~ selection(B);\par
+\~ \~ \~ \~ \~ \~cout << "\\n";\par
+\~ \~ \~ \~ \~ \~ return 0;\par
+\}\par
+\par
+\par
+Output\par
+Selection Sort\par
+Handling Integer elements\par
+How many elements are there ? 5\par
+Enter the integer elements\par
+30\par
+50\par
+40\par
+20\par
+10\par
+The sorted List is ...\par
+10\~\~\~\~\~ 20\~ \~30\~\~\~\~\~ 40\~\~\~\~\~ 50\par
+----------------------------------------------------------------------------------\par
+\par
+Handling Float elements\par
+How many elements are there ? 5\par
+Enter the float elements\par
+44.44\par
+22.22\par
+11.11\par
+55.55\par
+33.33\par
+\par
+The sorted List is ...\par
+11.11\~\~ 22.22\~\~33.33\~\~ 44.44\~\~ 55.55\par
+\par
+
+\pard\sa200\sl276\slmult1\qc EXPERIMENT NO:06\par
+
+\pard\sa200\sl276\slmult1 Write C++ program using STL for sorting and searching with user defined records such as\par
+person record(Name, DOB, Telephone number) using vector container\par
+INPUT:\par
+#include <iostream>\par
+#include<cstring>\par
+#include<cstdlib>\par
+#include<algorithm>\par
+#include <vector>\par
+using namespace std;\par
+typedef struct rec\par
+\{\par
+char name[20];\par
+char BirthDt[20];\par
+char phone[11];\par
+\}node;\par
+node temp;\par
+vector<node> rec; // create an empty vector\par
+vector<node>::iterator ptr;\par
+bool compare(node &r1,node &r2)\par
+\{\par
+if(strcmp(r1.name,r2.name)<0)\par
+return true;\par
+else\par
+return false;\par
+\}\par
+void Create()\par
+\{\par
+int n,i;\par
+cout <<"\\n How many elements you want to insert?"<<endl;\par
+cin>>n;\par
+cout<<"\\n Enter the Elements in the database"<<endl;\par
+for(i=0; i<n; i++)\par
+\{\par
+cout<<"\\n Name: ";\par
+cin>>temp.name;\par
+cout<<"\\n Birth Date(dd-mm-yy): ";\par
+cin>>temp.BirthDt;\par
+cout<<"\\n Phone: ";\par
+cin>>temp.phone;\par
+rec.push_back(temp);\par
+\}\par
+\}\par
+void Display()\par
+\{\par
+cout<<"\\n\\tThe contents of the database are: ";\par
+cout<<"\\n------------------------------------------------";\par
+cout<<"\\n Name Birth Date Phone";\par
+cout<<"\\n------------------------------------------------";\par
+for(ptr=rec.begin();ptr!=rec.end();ptr++)//accessing the contents thru iterator\par
+\{\par
+cout<<"\\n";\par
+cout<<" "<<(*ptr).name;\par
+cout<<" "<<(*ptr).BirthDt;\par
+cout<<" "<<(*ptr).phone;\par
+\}\par
+\}\par
+void Searching()\par
+\{\par
+char key[20];\par
+int flag=0;\par
+cout<<"\\n Enter the name which you want to search ";\par
+cin>>key;\par
+for(ptr=rec.begin();ptr!=rec.end();ptr++)\par
+\{\par
+if(strcmp((*ptr).name,key)==0)\par
+\{\par
+flag=1;\par
+break;\par
+\}\par
+else\par
+flag=0;\par
+\}\par
+if(flag==1)\par
+cout<<"\\n The desired element is present in the database ";\par
+else\par
+cout<<"\\n The desired element is not present in the database ";\par
+\}\par
+void Sorting()\par
+\{\par
+sort(rec.begin(),rec.end(),compare);\par
+cout <<"\\n\\n Record is Sorted!!! "<<endl;\par
+\}\par
+int main()\par
+\{\par
+char ans='y';\par
+int choice;\par
+cout<<"\\n Program for Searching and sorting ";\par
+do\par
+\{\par
+cout<<"\\n Main Menu ";\par
+cout<<"\\n 1. Create a database ";\par
+cout<<"\\n 2. Display a database ";\par
+cout<<"\\n 3. Search particular element";\par
+cout<<"\\n 4. Sort the database(based on name)";\par
+cout<<"\\n Enter your choice: ";\par
+cin>>choice;\par
+switch(choice)\par
+\{\par
+case 1:Create();\par
+break;\par
+case 2:Display();\par
+break;\par
+case 3:Searching();\par
+break;\par
+case 4:Sorting();\par
+Display();\par
+break;\par
+\}\par
+cout<<"\\n Do you want to go back to Main Menu? ";\par
+cin>>ans;\par
+\}while(ans=='y');\par
+return 0;\par
+\}\par
+OUTPUT:\par
+Program for Searching and sorting\par
+Main Menu\par
+1. Create a database\par
+2. Display a database\par
+3. Search particular element\par
+4. Sort the database(based on name)\par
+Enter your choice: 1\par
+How many elements you want to insert?\par
+3\par
+Enter the Elements in the database\par
+Name: BBB\par
+Birth Date(dd-mm-yy): 01-01-01\par
+Phone: 1111\par
+Name: CCC\par
+Birth Date(dd-mm-yy): 11-11-19\par
+Phone: 2222\par
+Name: AAA\par
+Birth Date(dd-mm-yy): 05-10-05\par
+Phone: 3333\par
+Do you want to go back to Main Menu? y\par
+Main Menu\par
+1. Create a database\par
+2. Display a database\par
+3. Search particular element\par
+4. Sort the database(based on name)\par
+Enter your choice: 2\par
+The contents of the database are:\par
+------------------------------------------------\par
+Name Birth Date Phone\par
+------------------------------------------------\par
+BBB 01-01-01 1111\par
+CCC 11-11-19 2222\par
+AAA 05-10-05 3333\par
+Do you want to go back to Main Menu? y\par
+Main Menu\par
+1. Create a database\par
+2. Display a database\par
+3. Search particular element\par
+4. Sort the database(based on name)\par
+Enter your choice: 3\par
+Enter the name which you want to search CCC\par
+The desired element is present in the database\par
+Do you want to go back to Main Menu? y\par
+Main Menu\par
+1. Create a database\par
+2. Display a database\par
+3. Search particular element\par
+4. Sort the database(based on name)\par
+Enter your choice: 4\par
+Record is Sorted!!!\par
+The contents of the database are:\par
+------------------------------------------------\par
+Name Birth Date Phone\par
+------------------------------------------------\par
+AAA 05-10-05 3333\par
+BBB 01-01-01 1111\par
+CCC 11-11-19 2222\par
+Do you want to go back to Main Menu?\par
+\par
+
+\pard\sa200\sl276\slmult1\qc EXPERIMENT NO:07\par
+
+\pard\sa200\sl276\slmult1 Write a program in C++ to use map associative container. The keys will be the names of states,\par
+and the values will be the populations of the states. When the program runs, the user is\par
+prompted to type the name of a state. The program then looks in the map, using the state name\par
+as an index, and returns the population of the state.\par
+INPUT:\par
+#include <iostream>\par
+#include <map>\par
+#include<string>\par
+using namespace std;\par
+int main()\par
+\{\par
+string state;\par
+int population;\par
+char ans = \lquote y\rquote ;\par
+int choice;\par
+map<string,int> m;\par
+map<string,int>::iterator i;\par
+do\par
+\{\par
+cout << "\\n Main Menu";\par
+cout << "\\n1. Insert an element";\par
+cout << "\\n2. Display";\par
+cout << "\\n3. Search an state";\par
+cout << "\\n Enter your choice: ";\par
+cin >> choice;\par
+switch (choice)\par
+\{\par
+case 1:cout << "\\n Enter the name of state: ";\par
+cin >> state;\par
+cout << "\\n Enter the population(in Cr): ";\par
+cin >> population;\par
+m.insert(pair<string,int>(state,population));\par
+break;\par
+case 2:cout << "State and Populations are: ";\par
+for (i = m.begin(); i != m.end(); i++)//i is for iterator\par
+cout <<"[" <<(*i).first << ", "<<(*i).second<<"] ";\par
+break;\par
+case 3:cout << "\\n Enter the name of state for searching its population: ";\par
+cin >> state;\par
+if(m.count(state)!=0) // first represents key and second represents value\par
+cout << "Population is " << m.find(state)->second<<\rdblquote Cr\rdblquote ;\par
+else\par
+cout << "State is not present in the list" << endl;\par
+break;\par
+\}\par
+cout << "\\n Do you want to continue?(y/n): ";\par
+cin >> ans;\par
+\} while (ans == 'y' || ans == 'Y');\par
+return 0;\par
+\}\par
+OUTPUT:\par
+Main Menu\par
+1. Insert an element\par
+2. Display\par
+3. Search an state\par
+Enter your choice: 1\par
+Enter the name of state: Maharashtra\par
+Enter the population(in Cr): 126\par
+Do you want to continue?(y/n): y\par
+Main Menu\par
+1. Insert an element\par
+2. Display\par
+3. Search an state\par
+Enter your choice: 1\par
+Enter the name of state: Gujrat\par
+Enter the population(in Cr): 72\par
+Do you want to continue?(y/n): y\par
+Main Menu\par
+1. Insert an element\par
+2. Display\par
+3. Search an state\par
+Enter your choice: 1\par
+Enter the name of state: Punjab\par
+Enter the population(in Cr): 4\par
+Do you want to continue?(y/n): y\par
+Main Menu\par
+1. Insert an element\par
+2. Display\par
+3. Search an state\par
+Enter your choice: 2\par
+State and Populations are: [Maharashtra, 126] [Gujrat, 72] [Punjab, 4]\par
+Do you want to continue?(y/n): y\par
+Main Menu\par
+1. Insert an element\par
+2. Display\par
+3. Search an state\par
+Enter your choice: 3\par
+Enter the name of state for searching its population: Maharashtra\par
+Population is 126 Cr\par
+Do you want to continue?(y/n): n\fs22\par
+}
+ 
