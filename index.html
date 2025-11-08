@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuctionBids - Online Auction System</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Load Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+<style>    
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom styles for toast notifications */
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 16px;
+            position: fixed;
+            z-index: 100;
+            left: 50%;
+            bottom: 30px;
+            font-size: 17px;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.5s linear;
+        }
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+            transition: visibility 0s, opacity 0.5s linear;
+        }
+        .toast.success {
+            background-color: #059669; /* Green */
+        }
+        .toast.error {
+            background-color: #B91C1C; /* Red */
+        }
+        /* Style for active nav link */
+        .nav-link.active {
+            border-bottom-width: 2px;
+            border-color: #2563EB; /* blue-600 */
+            color: #1F2937; /* gray-800 */
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Main Application Container -->
+    <div id="app" class="min-h-screen">
+
+        <!-- ===== View: Landing Page ===== -->
+        <div id="landing-view" class="w-full">
+            <!-- Landing Page Header -->
+            <header class="bg-white shadow-sm sticky top-0 z-50">
+                <nav class="container mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+                    <!-- Logo -->
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="ph-scales text-4xl text-blue-600"></i>
+                        <span class="text-3xl font-bold text-gray-800 ml-2">AuctionBids</span>
+                    </div>
+                    <!-- Desktop Nav -->
+                    <div class="hidden md:flex items-center space-x-8">
+                        <a href="#features" class="text-gray-600 hover:text-blue-600 font-medium transition duration-300">Features</a>
+                        <a href="#how-it-works" class="text-gray-600 hover:text-blue-600 font-medium transition duration-300">How It Works</a>
+                        <a href="#" class="nav-link-login text-gray-600 hover:text-blue-600 font-medium transition duration-300">Login</a>
+                    </div>
+                    <!-- Auth Buttons -->
+                    <div class="hidden md:flex items-center space-x-2">
+                        <button class="nav-link-login w-full sm:w-auto text-blue-600 font-medium py-2 px-5 rounded-lg hover:bg-gray-100 transition duration-300">
+                            Log In
+                        </button>
+                        <button class="nav-link-register w-full sm:w-auto bg-blue-600 text-white font-medium py-2 px-5 rounded-lg shadow-md hover:bg-blue-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            Sign Up
+                        </button>
+                    </div>
+                    <!-- Mobile Menu Button -->
+                    <div class="md:hidden">
+                        <button id="mobile-landing-menu-btn" class="text-gray-700 p-2 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300">
+                            <i class="ph-list text-3xl"></i>
+                        </button>
+                    </div>
+                </nav>
+                <!-- Mobile Menu -->
+                <div id="mobile-landing-menu" class="hidden md:hidden bg-white shadow-lg py-4">
+                    <a href="#features" class="block px-6 py-2 text-gray-700 hover:bg-gray-100 font-medium">Features</a>
+                    <a href="#how-it-works" class="block px-6 py-2 text-gray-700 hover:bg-gray-100 font-medium">How It Works</a>
+                    <div class="px-6 py-3">
+                        <button class="nav-link-login w-full text-blue-600 border border-blue-600 font-medium py-2 px-5 rounded-lg hover:bg-blue-50 transition duration-300 mb-2">
+                            Log In
+                        </button>
+                        <button class="nav-link-register w-full bg-blue-600 text-white font-medium py-2 px-5 rounded-lg shadow-md hover:bg-blue-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            Sign Up
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Hero Section -->
+            <section class="bg-white">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32 grid md:grid-cols-2 gap-12 items-center">
+                    <!-- Hero Text -->
+                    <div class="text-center md:text-left">
+                        <h1 class="text-4xl lg:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
+                            Find Rare Items.
+                            <br class="hidden md:block">
+                            <span class="text-blue-600">Win Your Next Bid.</span>
+                        </h1>
+                        <p class="text-lg text-gray-600 mb-10 max-w-lg mx-auto md:mx-0">
+                            The ultimate online auction platform. Discover unique items, place bids in real-time, and experience the thrill of the win.
+                        </p>
+                        <button class="nav-link-register bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg shadow-lg hover:bg-blue-700 transition duration-300 text-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            Get Started Now
+                        </button>
+                    </div>
+                    <!-- Hero Image -->
+                    <div class="relative">
+                        <img src="https://placehold.co/600x400/DBEAFE/2563EB?text=Auction+Item" alt="Auction Item" class="rounded-2xl shadow-2xl w-full">
+                        <div class="absolute -bottom-8 -left-8 bg-white p-4 rounded-lg shadow-xl hidden md:block">
+                            <div class="flex items-center space-x-3">
+                                <div class="bg-green-100 p-2 rounded-full">
+                                    <i class="ph-gavel text-xl text-green-600"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-600">Current Bid</p>
+                                    <p class="text-lg font-bold text-gray-900">$1,250</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section id="features" class="py-20 bg-gray-50">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-3xl font-bold text-center text-gray-900 mb-4">Why Choose AuctionBids?</h2>
+                    <p class="text-lg text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+                        We provide a secure, interactive, and user-friendly platform for all your bidding and selling needs.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <!-- Feature Card 1 -->
+                        <div class="bg-white p-8 rounded-xl shadow-lg text-center">
+                            <div class="inline-block bg-blue-100 text-blue-600 p-4 rounded-full mb-4">
+                                <i class="ph-timer text-4xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Real-Time Bidding</h3>
+                            <p class="text-gray-600">Experience the thrill of live auctions with bids that update instantly. No delays, no waiting.</p>
+                        </div>
+                        <!-- Feature Card 2 -->
+                        <div class="bg-white p-8 rounded-xl shadow-lg text-center">
+                            <div class="inline-block bg-green-100 text-green-600 p-4 rounded-full mb-4">
+                                <i class="ph-shield-check text-4xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Secure & Transparent</h3>
+                            <p class="text-gray-600">All transactions and user data are secured. Our system ensures a transparent bidding history for all items.</p>
+                        </div>
+                        <!-- Feature Card 3 -->
+                        <div class="bg-white p-8 rounded-xl shadow-lg text-center">
+                            <div class="inline-block bg-indigo-100 text-indigo-600 p-4 rounded-full mb-4">
+                                <i class="ph-layout text-4xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Powerful Dashboards</h3>
+                            <p class="text-gray-600">Dedicated dashboards for buyers, sellers, and admins to manage listings, track bids, and oversee activity.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- How It Works Section -->
+            <section id="how-it-works" class="py-20 bg-white">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">Get Started in 3 Easy Steps</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16">
+                        <!-- Step 1 -->
+                        <div class="text-center relative">
+                            <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold shadow-lg">1</div>
+                            <i class="ph-user-plus text-7xl text-blue-600 mb-4 mt-10"></i>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Create an Account</h3>
+                            <p class="text-gray-600">Quickly sign up as a buyer or a seller. It's free and takes less than a minute.</p>
+                        </div>
+                        <!-- Step 2 -->
+                        <div class="text-center relative">
+                            <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold shadow-lg">2</div>
+                            <i class="ph-magnifying-glass-plus text-7xl text-blue-600 mb-4 mt-10"></i>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Find or List Items</h3>
+                            <p class="text-gray-600">Browse thousands of unique items or list your own products for auction with our simple form.</p>
+                        </div>
+                        <!-- Step 3 -->
+                        <div class="text-center relative">
+                            <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold shadow-lg">3</div>
+                            <i class="ph-trophy text-7xl text-blue-600 mb-4 mt-10"></i>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Bid & Win</h3>
+                            <p class="text-gray-600">Place your bids in real-time. If you're the highest bidder when the timer runs out, you win!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="bg-gray-800 text-gray-400 py-10">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <p>&copy; 2025 AuctionBids. All rights reserved. A project based on the PDF by Chaudappa, Janardan, and Karan.</p>
+                </div>
+            </footer>
+        </div>
+
+
+        <!-- ===== View: Login ===== -->
+        <div id="login-view" class="hidden flex items-center justify-center min-h-screen p-4">
+            <div class="w-full max-w-md">
+                <button class="nav-link-home text-gray-600 hover:text-blue-600 font-medium mb-2 transition duration-300 flex items-center">
+                    <i class="ph-arrow-left mr-1"></i> Back to Home
+                </button>
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <div class="flex justify-center mb-6">
+                        <i class="ph-scales text-5xl text-blue-600"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-center text-gray-800 mb-2">Welcome Back!</h2>
+                    <p class="text-center text-gray-500 mb-6">Please login to your account.</p>
+                    <form id="login-form">
+                        <div class="mb-4">
+                            <label for="login-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input type="email" id="login-email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="buyer@mail.com" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="login-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                            <input type="password" id="login-password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="password" required>
+                        </div>
+                        <!-- Demo User Info -->
+                        <div class="mt-4 text-sm text-gray-500 bg-gray-50 p-3 rounded-lg">
+                            <p class="font-medium mb-1">Demo Logins (pass: 'password'):</p>
+                            <p>• <code class="text-blue-600">buyer@mail.com</code></p>
+                            <p>• <code class="text-green-600">seller@mail.com</code></p>
+                            <p>• <code class="text-red-600">admin@mail.com</code></p>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 mt-6 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md hover:shadow-lg">
+                            Login
+                        </button>
+                        <p class="text-center text-sm text-gray-600 mt-4">
+                            Don't have an account? <a href="#" id="show-register-link" class="font-medium text-blue-600 hover:underline">Sign up</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== View: Register ===== -->
+        <div id="register-view" class="hidden flex items-center justify-center min-h-screen p-4">
+             <div class="w-full max-w-md">
+                <button class="nav-link-home text-gray-600 hover:text-blue-600 font-medium mb-2 transition duration-300 flex items-center">
+                    <i class="ph-arrow-left mr-1"></i> Back to Home
+                </button>
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Create Account</h2>
+                    <form id="register-form">
+                        <div class="mb-4">
+                            <label for="register-name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                            <input type="text" id="register-name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="register-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input type="email" id="register-email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="register-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                            <input type="password" id="register-password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="register-role" class="block text-sm font-medium text-gray-700 mb-1">I am a...</label>
+                            <select id="register-role" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="buyer">Buyer (I want to bid on items)</option>
+                                <option value="seller">Seller (I want to list items)</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 mt-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md hover:shadow-lg">
+                            Register
+                        </button>
+                        <p class="text-center text-sm text-gray-600 mt-4">
+                            Already have an account? <a href="#" id="show-login-link" class="font-medium text-blue-600 hover:underline">Log in</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== View: Main Dashboard ===== -->
+        <div id="dashboard-view" class="hidden">
+            <!-- Header -->
+            <nav class="bg-white shadow-md sticky top-0 z-50">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between items-center h-16">
+                        <!-- Logo -->
+                        <div class="flex-shrink-0 flex items-center">
+                            <i class="ph-scales text-3xl text-blue-600"></i>
+                            <span class="text-2xl font-bold text-gray-800 ml-2">AuctionBids</span>
+                        </div>
+
+                        <!-- Navigation Links (Desktop) -->
+                        <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                            <a href="#" class="nav-link active" data-view="dashboard">Dashboard</a>
+                            <a href="#" class="nav-link" data-view="auctions">Active Auctions</a>
+                            <a href="#" class="nav-link hidden" data-role="buyer" data-view="my-bids">My Bids</a>
+                            <a href="#" class="nav-link hidden" data-role="seller" data-view="my-products">My Products</a>
+                            <a href="#" class="nav-link hidden" data-role="seller" data-view="list-item">List Item</a>
+                            <a href="#" class="nav-link hidden" data-role="admin" data-view="admin-users">Manage Users</a>
+                            <a href="#" class="nav-link hidden" data-role="admin" data-view="admin-items">Manage Items</a>
+                        </div>
+
+                        <!-- Profile & Logout -->
+                        <div class="flex items-center">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-gray-700 font-medium hidden sm:block" id="user-name-display"></span>
+                                <span class="inline-flex items-center justify-center h-10 w-10 rounded-full bg-blue-200 text-blue-800 font-semibold" id="user-initials-display"></span>
+                            </div>
+                            <button id="logout-button" class="ml-4 text-gray-500 hover:text-red-600 transition duration-300" title="Logout">
+                                <i class="ph-sign-out text-2xl"></i>
+                            </button>
+                            <!-- Mobile Menu Button -->
+                            <div class="sm:hidden ml-3">
+                                <button id="mobile-menu-button" class="text-gray-700 p-2 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300">
+                                    <i class="ph-list text-2xl"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Mobile Menu (Dashboard) -->
+                <div id="mobile-menu" class="hidden sm:hidden bg-white shadow-lg border-t border-gray-200">
+                    <div class="py-2">
+                        <a href="#" class="nav-link block px-4 py-3 text-base font-medium" data-view="dashboard">Dashboard</a>
+                        <a href="#" class="nav-link block px-4 py-3 text-base font-medium" data-view="auctions">Active Auctions</a>
+                        <a href="#" class="nav-link hidden block px-4 py-3 text-base font-medium" data-role="buyer" data-view="my-bids">My Bids</a>
+                        <a href="#" class="nav-link hidden block px-4 py-3 text-base font-medium" data-role="seller" data-view="my-products">My Products</a>
+                        <a href="#" class="nav-link hidden block px-4 py-3 text-base font-medium" data-role="seller" data-view="list-item">List Item</a>
+                        <a href="#" class="nav-link hidden block px-4 py-3 text-base font-medium" data-role="admin" data-view="admin-users">Manage Users</a>
+                        <a href="#" class="nav-link hidden block px-4 py-3 text-base font-medium" data-role="admin" data-view="admin-items">Manage Items</a>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Content Area -->
+            <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+                
+                <!-- Page: Dashboard (Home) -->
+                <div id="view-dashboard" class="page-view">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-6" id="welcome-message"></h1>
+                    
+                    <!-- Stats Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <!-- Total Active Auctions -->
+                        <div class="bg-white p-6 rounded-xl shadow-lg flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Total Active Auctions</p>
+                                <p class="text-3xl font-bold text-gray-900" id="stat-active-auctions">0</p>
+                            </div>
+                            <div class="bg-blue-100 text-blue-600 p-3 rounded-full">
+                                <i class="ph-gavel text-2xl"></i>
+                            </div>
+                        </div>
+                        <!-- My Bids (Buyer) -->
+                        <div class="bg-white p-6 rounded-xl shadow-lg flex items-center justify-between" data-role="buyer">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">My Bids</p>
+                                <p class="text-3xl font-bold text-gray-900" id="stat-my-bids">0</p>
+                            </div>
+                            <div class="bg-green-100 text-green-600 p-3 rounded-full">
+                                <i class="ph-hand-pointing text-2xl"></i>
+                            </div>
+                        </div>
+                        <!-- Highest Bid Won (Buyer) -->
+                        <div class="bg-white p-6 rounded-xl shadow-lg flex items-center justify-between" data-role="buyer">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Highest Bid Won</p>
+                                <p class="text-3xl font-bold text-gray-900" id="stat-highest-won">$0</p>
+                            </div>
+                            <div class="bg-yellow-100 text-yellow-600 p-3 rounded-full">
+                                <i class="ph-trophy text-2xl"></i>
+                            </div>
+                        </div>
+                         <!-- Outbid Alerts (Buyer) -->
+                        <div class="bg-white p-6 rounded-xl shadow-lg flex items-center justify-between" data-role="buyer">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Outbid Alerts</p>
+                                <p class="text-3xl font-bold text-gray-900" id="stat-outbid-alerts">0</p>
+                            </div>
+                            <div class="bg-red-100 text-red-600 p-3 rounded-full">
+                                <i class="ph-warning text-2xl"></i>
+                            </div>
+                        </div>
+                        <!-- Items Listed (Seller) -->
+                        <div class="bg-white p-6 rounded-xl shadow-lg flex items-center justify-between" data-role="seller">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">My Items Listed</p>
+                                <p class="text-3xl font-bold text-gray-900" id="stat-items-listed">0</p>
+                            </div>
+                            <div class="bg-green-100 text-green-600 p-3 rounded-full">
+                                <i class="ph-tag text-2xl"></i>
+                            </div>
+                        </div>
+                        <!-- Total Earnings (Seller) -->
+                        <div class="bg-white p-6 rounded-xl shadow-lg flex items-center justify-between" data-role="seller">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Total Earnings (Sold)</p>
+                                <p class="text-3xl font-bold text-gray-900" id="stat-total-earnings">$0</p>
+                            </div>
+                            <div class="bg-yellow-100 text-yellow-600 p-3 rounded-full">
+                                <i class="ph-money text-2xl"></i>
+                            </div>
+                        </div>
+                        <!-- Total Users (Admin) -->
+                        <div class="bg-white p-6 rounded-xl shadow-lg flex items-center justify-between" data-role="admin">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Total Users</p>
+                                <p class="text-3xl font-bold text-gray-900" id="stat-total-users">0</p>
+                            </div>
+                            <div class="bg-indigo-100 text-indigo-600 p-3 rounded-full">
+                                <i class="ph-users text-2xl"></i>
+                            </div>
+                        </div>
+                         <!-- Total Items (Admin) -->
+                        <div class="bg-white p-6 rounded-xl shadow-lg flex items-center justify-between" data-role="admin">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Total Items</p>
+                                <p class="text-3xl font-bold text-gray-900" id="stat-total-items">0</p>
+                            </div>
+                            <div class="bg-pink-100 text-pink-600 p-3 rounded-full">
+                                <i class="ph-archive text-2xl"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity / Auctions -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg">
+                            <h2 class="text-xl font-semibold text-gray-800 mb-4">Active Auctions</h2>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead>
+                                        <tr>
+                                            <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Auction Item</th>
+                                            <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Current Price</th>
+                                            <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" data-role="buyer">My Bid</th>
+                                            <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time Left</th>
+                                            <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="dashboard-auction-list" class="bg-white divide-y divide-gray-200">
+                                        <!-- Rows injected by JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-lg" data-role="buyer">
+                            <h2 class="text-xl font-semibold text-gray-800 mb-4">Recent Activity</h2>
+                            <ul class="space-y-4" id="recent-activity-list">
+                                <!-- Activity injected by JS -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Page: Active Auctions -->
+                <div id="view-auctions" class="page-view hidden">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-6">Active Auctions</h1>
+                    <div id="auction-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Product cards injected by JS -->
+                    </div>
+                </div>
+
+                <!-- Page: My Bids (Buyer) -->
+                <div id="view-my-bids" class="page-view hidden" data-role="buyer">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-6">My Bids</h1>
+                    <div class="bg-white p-6 rounded-xl shadow-lg overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead>
+                                <tr>
+                                    <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item</th>
+                                    <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">My Bid</th>
+                                    <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Current Highest Bid</th>
+                                    <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time Left</th>
+                                    <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="my-bids-list" class="bg-white divide-y divide-gray-200">
+                                <!-- Bids injected by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Page: My Products (Seller) -->
+                <div id="view-my-products" class="page-view hidden" data-role="seller">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-6">My Products</h1>
+                    <div id="my-products-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- My Products injected by JS -->
+                    </div>
+                </div>
+
+                <!-- Page: List New Item (Seller) -->
+                <div id="view-list-item" class="page-view hidden" data-role="seller">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-6">List a New Item</h1>
+                    <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+                        <form id="list-item-form">
+                            <div class="mb-4">
+                                <label for="item-name" class="block text-sm font-medium text-gray-700 mb-1">Item Name</label>
+                                <input type="text" id="item-name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="item-description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                                <textarea id="item-description" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label for="item-base-price" class="block text-sm font-medium text-gray-700 mb-1">Base Price ($)</label>
+                                    <input type="number" id="item-base-price" min="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                </div>
+                                <div>
+                                    <label for="item-duration" class="block text-sm font-medium text-gray-700 mb-1">Auction Duration (Minutes)</label>
+                                    <input type="number" id="item-duration" min="1" value="60" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="item-image-url" class="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
+                                <input type="text" id="item-image-url" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="https://placehold.co/600x400">
+                            </div>
+                            <button type="submit" class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md hover:shadow-lg">
+                                List Item for Auction
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Page: Manage Users (Admin) -->
+                <div id="view-admin-users" class="page-view hidden" data-role="admin">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-6">Manage Users</h1>
+                    <div class="bg-white p-6 rounded-xl shadow-lg overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead>
+                                <tr>
+                                    <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User ID</th>
+                                    <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                    <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                    <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                                    <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-users-list" class="bg-white divide-y divide-gray-200">
+                                <!-- Users injected by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Page: Manage Items (Admin) -->
+                <div id="view-admin-items" class="page-view hidden" data-role="admin">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-6">Manage Items</h1>
+                    <div class="bg-white p-6 rounded-xl shadow-lg overflow-x-auto">
+                         <table class="min-w-full divide-y divide-gray-200">
+                            <thead>
+                                <tr>
+                                    <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item</th>
+                                    <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Seller</th>
+                                    <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Current Bid</th>
+                                    <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time Left</th>
+                                    <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-items-list" class="bg-white divide-y divide-gray-200">
+                                <!-- Items injected by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+
+    </div>
+
+    <!-- ===== Modal: Place Bid ===== -->
+    <div id="bid-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center z-50 p-4">
+        <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-2xl font-bold text-gray-800">Place a Bid</h3>
+                <button id="close-bid-modal" class="text-gray-400 hover:text-gray-600 transition duration-300">
+                    <i class="ph-x text-2xl"></i>
+                </button>
+            </div>
+            <form id="bid-form">
+                <h4 class="text-lg font-semibold" id="modal-item-name">Item Name</h4>
+                <p class="text-sm text-gray-500 mb-2">Current Bid: <span class="font-bold text-gray-700" id="modal-current-bid">$0</span></p>
+                <p class="text-sm text-gray-500 mb-4">Bidding ends in: <span class="font-bold text-red-600" id="modal-time-left">00:00:00</span></p>
+                
+                <input type="hidden" id="modal-item-id">
+                
+                <div class="mb-4">
+                    <label for="bid-amount" class="block text-sm font-medium text-gray-700 mb-1">Your Bid Amount ($)</label>
+                    <input type="number" id="bid-amount" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" min="0" required>
+                    <p class="text-xs text-gray-500 mt-1">Must be higher than the current bid.</p>
+                </div>
+                
+                <button type="submit" class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md hover:shadow-lg">
+                    Place Bid
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div id="toast-notification" class="toast">
+        <span id="toast-message"></span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // === STATE MANAGEMENT ===
+            let mockDatabase = {
+                users: [
+                    { id: 1, name: 'Admin User', email: 'admin@mail.com', password: 'password', role: 'admin' },
+                    { id: 2, name: 'Buyer User', email: 'buyer@mail.com', password: 'password', role: 'buyer' },
+                    { id: 3, name: 'Seller User', email: 'seller@mail.com', password: 'password', role: 'seller' },
+                ],
+                products: [
+                    { 
+                        id: 1, 
+                        name: 'Vintage Leather Jacket', 
+                        description: 'A classic brown leather jacket from the 80s. Good condition.',
+                        basePrice: 50,
+                        currentBid: 75,
+                        highestBidderId: 2,
+                        sellerId: 3,
+                        imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSn8bImWeu4wVnCmUFNi9oGqfZNDeRMv-us-7ditabw6T4oEvN6bMO5V4sq0yVgIs-QoZA&usqp=CAU',
+                        endTime: new Date().getTime() + 1000 * 60 * 15 // 15 minutes from now
+                    },
+                    { 
+                        id: 2, 
+                        name: 'Antique Vase', 
+                        description: 'A beautiful Ming dynasty replica vase. Hand-painted.',
+                        basePrice: 120,
+                        currentBid: 120,
+                        highestBidderId: null,
+                        sellerId: 3,
+                        imageUrl: 'https://i.ebayimg.com/images/g/wW8AAOSw8Etki5MT/s-l1200.jpg',
+                        endTime: new Date().getTime() + 1000 * 60 * 60 * 2 // 2 hours from now
+                    },
+                    { 
+                        id: 3, 
+                        name: 'Modern Laptop', 
+                        description: 'A high-performance laptop, barely used. 16GB RAM, 1TB SSD.',
+                        basePrice: 800,
+                        currentBid: 850,
+                        highestBidderId: 2,
+                        sellerId: 1, // Admin can also be a seller
+                        imageUrl: 'https://i.pinimg.com/736x/56/51/34/5651343b2dcda1e5fc903bd1764650b6.jpg',
+                        endTime: new Date().getTime() + 1000 * 60 * 3 // 3 minutes from now
+                    }
+                ],
+                bids: [
+                    { id: 1, itemId: 1, userId: 2, amount: 60, timestamp: new Date().getTime() - 1000 * 60 * 10 },
+                    { id: 2, itemId: 1, userId: 1, amount: 70, timestamp: new Date().getTime() - 1000 * 60 * 5 },
+                    { id: 3, itemId: 1, userId: 2, amount: 75, timestamp: new Date().getTime() - 1000 * 60 * 2 },
+                    { id: 4, itemId: 3, userId: 2, amount: 850, timestamp: new Date().getTime() - 1000 * 60 * 1 },
+                ],
+                activityLog: [
+                    { id: 1, userId: 2, message: 'You were outbid on Vintage Leather Jacket.', timestamp: new Date().getTime() - 1000 * 60 * 5, read: false },
+                    { id: 2, userId: 2, message: 'Your bid of $850 on Modern Laptop is the highest.', timestamp: new Date().getTime() - 1000 * 60 * 1, read: true },
+                    { id: 3, userId: 3, message: 'New bid of $75 on Vintage Leather Jacket.', timestamp: new Date().getTime() - 1000 * 60 * 2, read: true },
+                ]
+            };
+
+            let currentUser = null;
+            let currentView = 'landing';
+            let auctionInterval;
+
+            // === UI SELECTORS ===
+            const views = {
+                landing: document.getElementById('landing-view'),
+                login: document.getElementById('login-view'),
+                register: document.getElementById('register-view'),
+                dashboard: document.getElementById('dashboard-view')
+            };
+            const pageViews = document.querySelectorAll('.page-view');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const bidModal = document.getElementById('bid-modal');
+            const closeBidModalBtn = document.getElementById('close-bid-modal');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuBtn = document.getElementById('mobile-menu-button');
+            const mobileLandingMenu = document.getElementById('mobile-landing-menu');
+            const mobileLandingMenuBtn = document.getElementById('mobile-landing-menu-btn');
+
+            // === HELPER FUNCTIONS ===
+
+            /**
+             * Shows a toast notification
+             * @param {string} message - The message to display
+             * @param {string} type - 'success' or 'error'
+             */
+            function showToast(message, type = 'success') {
+                const toast = document.getElementById('toast-notification');
+                const msgEl = document.getElementById('toast-message');
+                
+                msgEl.textContent = message;
+                toast.className = `toast show ${type}`;
+                
+                setTimeout(() => {
+                    toast.className = toast.className.replace('show', '');
+                }, 3000);
+            }
+
+            /**
+             * Formats a millisecond timestamp into hh:mm:ss
+             * @param {number} ms - Milliseconds remaining
+             */
+            function formatTime(ms) {
+                if (ms <= 0) return '00:00:00';
+                let seconds = Math.floor((ms / 1000) % 60);
+                let minutes = Math.floor((ms / (1000 * 60)) % 60);
+                let hours = Math.floor((ms / (1000 * 60 * 60)) % 24);
+
+                hours = (hours < 10) ? "0" + hours : hours;
+                minutes = (minutes < 10) ? "0" + minutes : minutes;
+                seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+                return `${hours}:${minutes}:${seconds}`;
+            }
+
+            /**
+             * Formats a number as USD currency
+             * @param {number} amount - The amount to format
+             */
+            function formatCurrency(amount) {
+                return new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }).format(amount);
+            }
+
+            /**
+             * Finds a user by their ID
+             */
+            function getUserById(id) {
+                return mockDatabase.users.find(u => u.id === id);
+            }
+
+            /**
+             * Finds a product by its ID
+             */
+            function getProductById(id) {
+                return mockDatabase.products.find(p => p.id === id);
+            }
+
+            // === VIEW NAVIGATION ===
+
+            /**
+             * Switches the main visible view
+             * @param {string} viewName - 'landing', 'login', 'register', or 'dashboard'
+             */
+            function showView(viewName) {
+                // Hide all views
+                Object.values(views).forEach(view => view.classList.add('hidden'));
+
+                // Show the requested view
+                const viewToShow = views[viewName];
+                if (viewToShow) {
+                    viewToShow.classList.remove('hidden');
+                    // Special layout for login/register
+                    if (viewName === 'login' || viewName === 'register') {
+                        viewToShow.classList.add('flex');
+                    } else {
+                        viewToShow.classList.remove('flex');
+                    }
+                }
+                
+                currentView = viewName;
+                
+                if (viewName === 'dashboard') {
+                    showPage('dashboard');
+                } else {
+                    // Stop auction interval if not on dashboard
+                    if (auctionInterval) clearInterval(auctionInterval);
+                }
+                window.scrollTo(0, 0); // Scroll to top on view change
+            }
+
+            /**
+             * Switches the visible page within the dashboard
+             * @param {string} pageName - e.g., 'dashboard', 'auctions'
+             */
+            function showPage(pageName) {
+                pageViews.forEach(page => page.classList.add('hidden'));
+                const pageToShow = document.getElementById(`view-${pageName}`);
+                if (pageToShow) {
+                    pageToShow.classList.remove('hidden');
+                }
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active', 'border-blue-600', 'text-gray-800', 'font-semibold', 'border-b-2');
+                    link.classList.add('text-gray-500', 'hover:text-gray-700');
+                    if(link.closest('#mobile-menu')) {
+                        link.classList.remove('text-gray-500', 'hover:text-gray-700');
+                        link.classList.add('text-gray-700', 'hover:bg-gray-100');
+                    }
+                    
+                    if (link.dataset.view === pageName) {
+                        link.classList.add('active');
+                        if(link.closest('#mobile-menu')) {
+                            link.classList.add('bg-blue-50', 'text-blue-700');
+                        }
+                    }
+                });
+
+                mobileMenu.classList.add('hidden'); // Close mobile menu on nav
+                currentView = pageName;
+                updateAllUI(); // Refresh data on page change
+            }
+
+            // --- Landing Page Navigation ---
+            document.querySelectorAll('.nav-link-home').forEach(el => {
+                el.addEventListener('click', (e) => { e.preventDefault(); showView('landing'); });
+            });
+            document.querySelectorAll('.nav-link-login').forEach(el => {
+                el.addEventListener('click', (e) => { e.preventDefault(); showView('login'); });
+            });
+            document.querySelectorAll('.nav-link-register').forEach(el => {
+                el.addEventListener('click', (e) => { e.preventDefault(); showView('register'); });
+            });
+            
+            // --- Auth Page Navigation ---
+            document.getElementById('show-register-link').addEventListener('click', (e) => {
+                e.preventDefault();
+                showView('register');
+            });
+            document.getElementById('show-login-link').addEventListener('click', (e) => {
+                e.preventDefault();
+                showView('login');
+            });
+
+            // --- Mobile Menu Toggles ---
+            mobileLandingMenuBtn.addEventListener('click', () => {
+                mobileLandingMenu.classList.toggle('hidden');
+            });
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+
+            // === AUTHENTICATION ===
+            document.getElementById('login-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+
+                const user = mockDatabase.users.find(u => u.email === email && u.password === password);
+
+                if (user) {
+                    currentUser = user;
+                    showToast('Login successful!', 'success');
+                    initializeDashboard();
+                    showView('dashboard');
+                } else {
+                    showToast('Invalid email or password.', 'error');
+                }
+            });
+
+            document.getElementById('register-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('register-name').value;
+                const email = document.getElementById('register-email').value;
+                const password = document.getElementById('register-password').value;
+                const role = document.getElementById('register-role').value;
+
+                if (mockDatabase.users.find(u => u.email === email)) {
+                    showToast('Email already exists.', 'error');
+                    return;
+                }
+
+                const newUser = {
+                    id: mockDatabase.users.length + 1,
+                    name,
+                    email,
+                    password,
+                    role
+                };
+                mockDatabase.users.push(newUser);
+                currentUser = newUser;
+                
+                showToast('Registration successful!', 'success');
+                initializeDashboard();
+                showView('dashboard');
+            });
+
+            document.getElementById('logout-button').addEventListener('click', () => {
+                currentUser = null;
+                showView('landing');
+                if (auctionInterval) clearInterval(auctionInterval);
+            });
+
+            // === DASHBOARD INITIALIZATION ===
+            function initializeDashboard() {
+                // Set user info
+                document.getElementById('user-name-display').textContent = currentUser.name;
+                const initials = currentUser.name.match(/\b(\w)/g) || [];
+                document.getElementById('user-initials-display').textContent = (initials.shift() || '' + initials.pop() || '').toUpperCase();
+                document.getElementById('welcome-message').textContent = `Welcome back, ${currentUser.name}!`;
+
+                // Show role-specific elements
+                const allRoleElements = document.querySelectorAll('[data-role]');
+                allRoleElements.forEach(el => el.classList.add('hidden'));
+                
+                const userRoleElements = document.querySelectorAll(`[data-role="${currentUser.role}"]`);
+                userRoleElements.forEach(el => el.classList.remove('hidden'));
+
+                // Set up nav link navigation
+                navLinks.forEach(link => {
+                    if(!link.dataset.listener) {
+                        link.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            showPage(link.dataset.view);
+                        });
+                        link.dataset.listener = true;
+                    }
+                });
+
+                // Start the auction timer update loop
+                if (auctionInterval) clearInterval(auctionInterval);
+                auctionInterval = setInterval(updateAuctionTimers, 1000);
+                
+                updateAllUI();
+            }
+
+            // === UI UPDATE FUNCTIONS ===
+
+            /**
+             * Main function to refresh all dynamic UI elements
+             */
+            function updateAllUI() {
+                if (!currentUser) return;
+                
+                updateStats();
+
+                switch (currentView) {
+                    case 'dashboard':
+                        renderDashboardAuctions();
+                        renderRecentActivity();
+                        break;
+                    case 'auctions':
+                        renderActiveAuctions();
+                        break;
+                    case 'my-bids':
+                        renderMyBids();
+                        break;
+                    case 'my-products':
+                        renderMyProducts();
+                        break;
+                    case 'admin-users':
+                        renderAdminUsers();
+                        break;
+                    case 'admin-items':
+                        renderAdminItems();
+                        break;
+                }
+                
+                // Ensure correct elements are shown for the role
+                const allRoleElements = document.querySelectorAll('[data-role]');
+                allRoleElements.forEach(el => {
+                    if (!el.classList.contains('hidden') && el.dataset.role !== currentUser.role) {
+                         el.classList.add('hidden');
+                    } else if (el.dataset.role === currentUser.role) {
+                         el.classList.remove('hidden');
+                    }
+                });
+            }
+
+            /**
+             * Updates all dashboard stat cards
+             */
+            function updateStats() {
+                const now = new Date().getTime();
+                const activeAuctions = mockDatabase.products.filter(p => p.endTime > now);
+                const myBids = mockDatabase.bids.filter(b => b.userId === currentUser.id);
+                const myHighestBids = activeAuctions.filter(p => p.highestBidderId === currentUser.id);
+                const myOutbidItems = myBids.filter(myBid => {
+                    const item = getProductById(myBid.itemId);
+                    return item && item.endTime > now && item.highestBidderId !== currentUser.id;
+                });
+                
+                const myWonBids = mockDatabase.products.filter(p => p.endTime <= now && p.highestBidderId === currentUser.id);
+                const highestWon = myWonBids.reduce((max, item) => item.currentBid > max ? item.currentBid : max, 0);
+
+                const myListedItems = mockDatabase.products.filter(p => p.sellerId === currentUser.id);
+                const mySoldItems = myListedItems.filter(p => p.endTime <= now && p.highestBidderId);
+                const totalEarnings = mySoldItems.reduce((sum, item) => sum + item.currentBid, 0);
+
+                // All Users
+                document.getElementById('stat-active-auctions').textContent = activeAuctions.length;
+
+                // Buyer Stats
+                if (currentUser.role === 'buyer') {
+                    document.getElementById('stat-my-bids').textContent = new Set(myBids.map(b => b.itemId)).size;
+                    document.getElementById('stat-highest-won').textContent = formatCurrency(highestWon);
+                    document.getElementById('stat-outbid-alerts').textContent = new Set(myOutbidItems.map(b => b.itemId)).size;
+                }
+                
+                // Seller Stats
+                if (currentUser.role === 'seller') {
+                    document.getElementById('stat-items-listed').textContent = myListedItems.length;
+                    document.getElementById('stat-total-earnings').textContent = formatCurrency(totalEarnings);
+                }
+
+                // Admin Stats
+                if (currentUser.role === 'admin') {
+                    document.getElementById('stat-total-users').textContent = mockDatabase.users.length;
+                    document.getElementById('stat-total-items').textContent = mockDatabase.products.length;
+                }
+            }
+
+            /**
+             * Renders the auction list on the main dashboard
+             */
+            function renderDashboardAuctions() {
+                const listEl = document.getElementById('dashboard-auction-list');
+                if (!listEl) return;
+                listEl.innerHTML = '';
+                const now = new Date().getTime();
+                const activeAuctions = mockDatabase.products
+                    .filter(p => p.endTime > now)
+                    .slice(0, 5); // Show top 5
+
+                if (activeAuctions.length === 0) {
+                    listEl.innerHTML = `<tr><td colspan="5" class="py-4 px-4 text-center text-gray-500">No active auctions right now.</td></tr>`;
+                    return;
+                }
+
+                activeAuctions.forEach(item => {
+                    const myBid = mockDatabase.bids.filter(b => b.userId === currentUser.id && b.itemId === item.id).pop();
+                    const timeLeft = item.endTime - now;
+                    
+                    const row = document.createElement('tr');
+                    row.className = "hover:bg-gray-50";
+                    row.innerHTML = `
+                        <td class="py-3 px-4 text-sm font-medium text-gray-900">${item.name}</td>
+                        <td class="py-3 px-4 text-sm text-gray-700 font-semibold">${formatCurrency(item.currentBid)}</td>
+                        <td class="py-3 px-4 text-sm text-gray-500" data-role="buyer">${myBid ? formatCurrency(myBid.amount) : 'N/A'}</td>
+                        <td class="py-3 px-4 text-sm text-red-600 font-medium" data-timer="${item.id}">${formatTime(timeLeft)}</td>
+                        <td class="py-3 px-4">
+                            <button class="bid-button text-white bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded-lg text-sm font-medium transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500" data-item-id="${item.id}">Bid</button>
+                        </td>
+                    `;
+                    listEl.appendChild(row);
+                });
+                
+                // Re-apply role-based visibility for the table columns
+                listEl.querySelectorAll('[data-role]').forEach(el => el.classList.add('hidden'));
+                listEl.querySelectorAll(`[data-role="${currentUser.role}"]`).forEach(el => el.classList.remove('hidden'));
+            }
+
+            /**
+             * Renders the recent activity list for buyers
+             */
+            function renderRecentActivity() {
+                const listEl = document.getElementById('recent-activity-list');
+                if (!listEl) return;
+                listEl.innerHTML = '';
+                const myActivity = mockDatabase.activityLog
+                    .filter(a => a.userId === currentUser.id)
+                    .sort((a, b) => b.timestamp - a.timestamp)
+                    .slice(0, 5);
+                
+                if (myActivity.length === 0) {
+                    listEl.innerHTML = `<li class="text-sm text-gray-500">No recent activity.</li>`;
+                    return;
+                }
+                
+                myActivity.forEach(activity => {
+                    const icon = activity.message.includes('outbid') ? 
+                        '<i class="ph-warning-circle text-red-500 text-xl mr-3 flex-shrink-0"></i>' : 
+                        '<i class="ph-check-circle text-green-500 text-xl mr-3 flex-shrink-0"></i>';
+                    
+                    const li = document.createElement('li');
+                    li.className = 'flex items-center text-sm text-gray-700';
+                    li.innerHTML = `
+                        ${icon}
+                        <span>${activity.message}</span>
+                    `;
+                    listEl.appendChild(li);
+                });
+            }
+
+            /**
+             * Renders all active auctions on the 'Active Auctions' page
+             */
+            function renderActiveAuctions() {
+                const container = document.getElementById('auction-list-container');
+                if (!container) return;
+                container.innerHTML = '';
+                const now = new Date().getTime();
+                const activeAuctions = mockDatabase.products.filter(p => p.endTime > now);
+
+                if (activeAuctions.length === 0) {
+                    container.innerHTML = `<p class="text-gray-500 col-span-full text-center">No active auctions found.</p>`;
+                    return;
+                }
+
+                activeAuctions.forEach(item => {
+                    const timeLeft = item.endTime - now;
+                    const card = document.createElement('div');
+                    card.className = "bg-white rounded-xl shadow-lg overflow-hidden flex flex-col";
+                    card.innerHTML = `
+                        <img src="${item.imageUrl || 'https://placehold.co/600x400/EEE/AAA?text=No+Image'}" 
+                             alt="${item.name}" 
+                             class="h-48 w-full object-cover"
+                             onerror="this.src='https://placehold.co/600x400/EEE/AAA?text=Image+Error'">
+                        <div class="p-4 flex flex-col flex-grow">
+                            <h3 class="text-lg font-bold text-gray-800">${item.name}</h3>
+                            <p class="text-sm text-gray-600 mt-1 mb-3 flex-grow">${item.description}</p>
+                            <div class="mb-3">
+                                <p class="text-xs text-gray-500">CURRENT BID</p>
+                                <p class="text-2xl font-bold text-blue-600">${formatCurrency(item.currentBid)}</p>
+                            </div>
+                            <div class="mb-4">
+                                <p class="text-xs text-gray-500">TIME LEFT</p>
+                                <p class="text-lg font-semibold text-red-600" data-timer="${item.id}">${formatTime(timeLeft)}</p>
+                            </div>
+                            <button class="bid-button w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md hover:shadow-lg" data-item-id="${item.id}">
+                                Place Bid
+                            </button>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+
+            /**
+             * Renders the 'My Bids' table for buyers
+             */
+            function renderMyBids() {
+                const listEl = document.getElementById('my-bids-list');
+                if (!listEl) return;
+                listEl.innerHTML = '';
+                const now = new Date().getTime();
+                const myBidItems = new Set(mockDatabase.bids.filter(b => b.userId === currentUser.id).map(b => b.itemId));
+
+                if (myBidItems.size === 0) {
+                    listEl.innerHTML = `<tr><td colspan="5" class="py-4 px-4 text-center text-gray-500">You haven't placed any bids yet.</td></tr>`;
+                    return;
+                }
+
+                myBidItems.forEach(itemId => {
+                    const item = getProductById(itemId);
+                    if (!item) return;
+
+                    const myHighestBid = Math.max(...mockDatabase.bids
+                        .filter(b => b.userId === currentUser.id && b.itemId === itemId)
+                        .map(b => b.amount));
+                    
+                    const timeLeft = item.endTime - now;
+                    let statusHtml = '';
+
+                    if (timeLeft > 0) {
+                        if (item.highestBidderId === currentUser.id) {
+                            statusHtml = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Winning</span>`;
+                        } else {
+                            statusHtml = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Outbid</span>`;
+                        }
+                    } else {
+                        if (item.highestBidderId === currentUser.id) {
+                            statusHtml = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Won</span>`;
+                        } else {
+                            statusHtml = `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">Lost</span>`;
+                        }
+                    }
+
+                    const row = document.createElement('tr');
+                    row.className = "hover:bg-gray-50";
+                    row.innerHTML = `
+                        <td class="py-3 px-4 text-sm font-medium text-gray-900">${item.name}</td>
+                        <td class="py-3 px-4 text-sm text-gray-700 font-medium">${formatCurrency(myHighestBid)}</td>
+                        <td class="py-3 px-4 text-sm text-gray-700 font-bold">${formatCurrency(item.currentBid)}</td>
+                        <td class="py-3 px-4 text-sm font-medium ${timeLeft > 0 ? 'text-red-600' : 'text-gray-500'}" data-timer="${item.id}">
+                            ${timeLeft > 0 ? formatTime(timeLeft) : 'Auction Ended'}
+                        </td>
+                        <td class="py-3 px-4 text-sm text-gray-500">${statusHtml}</td>
+                    `;
+                    listEl.appendChild(row);
+                });
+            }
+
+            /**
+             * Renders the 'My Products' list for sellers
+             */
+            function renderMyProducts() {
+                const container = document.getElementById('my-products-list');
+                if (!container) return;
+                container.innerHTML = '';
+                const now = new Date().getTime();
+                const myProducts = mockDatabase.products.filter(p => p.sellerId === currentUser.id);
+
+                if (myProducts.length === 0) {
+                    container.innerHTML = `<p class="text-gray-500 col-span-full text-center">You haven't listed any items yet. <a href="#" class="text-blue-600 font-medium" onclick="showPage('list-item')">List one now!</a></p>`;
+                    return;
+                }
+                
+                myProducts.forEach(item => {
+                    const timeLeft = item.endTime - now;
+                    let statusHtml;
+
+                    if (timeLeft > 0) {
+                        statusHtml = `<p class="text-xs text-gray-500">TIME LEFT</p>
+                                      <p class="text-lg font-semibold text-red-600" data-timer="${item.id}">${formatTime(timeLeft)}</p>`;
+                    } else {
+                        const winner = getUserById(item.highestBidderId);
+                        statusHtml = `<p class="text-xs text-gray-500">AUCTION ENDED</p>
+                                      <p class="text-lg font-semibold text-green-600">
+                                        ${winner ? `Sold to ${winner.name}` : 'Not Sold'}
+                                      </p>`;
+                    }
+
+                    const card = document.createElement('div');
+                    card.className = "bg-white rounded-xl shadow-lg overflow-hidden flex flex-col";
+                    card.innerHTML = `
+                        <img src="${item.imageUrl || 'https://placehold.co/600x400/EEE/AAA?text=No+Image'}" 
+                             alt="${item.name}" 
+                             class="h-48 w-full object-cover"
+                             onerror="this.src='https://placehold.co/600x400/EEE/AAA?text=Image+Error'">
+                        <div class="p-4 flex flex-col flex-grow">
+                            <h3 class="text-lg font-bold text-gray-800">${item.name}</h3>
+                            <p class="text-sm text-gray-600 mt-1 mb-3 flex-grow">${item.description}</p>
+                            <div class="mb-3">
+                                <p class="text-xs text-gray-500">CURRENT BID</p>
+                                <p class="text-2xl font-bold text-blue-600">${formatCurrency(item.currentBid)}</p>
+                            </div>
+                            <div class="mb-4">
+                                ${statusHtml}
+                            </div>
+                            <button class="delete-item-button w-full bg-red-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-red-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" data-item-id="${item.id}">
+                                Delete Item
+                            </button>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+
+            /**
+             * Renders the 'Manage Users' table for admins
+             */
+            function renderAdminUsers() {
+                const listEl = document.getElementById('admin-users-list');
+                if (!listEl) return;
+                listEl.innerHTML = '';
+                mockDatabase.users.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="py-3 px-4 text-sm font-medium text-gray-900">#${user.id}</td>
+                        <td class="py-3 px-4 text-sm text-gray-700">${user.name}</td>
+                        <td class="py-3 px-4 text-sm text-gray-700">${user.email}</td>
+                        <td class="py-3 px-4 text-sm text-gray-700 capitalize">${user.role}</td>
+                        <td class="py-3 px-4">
+                            ${user.role !== 'admin' ? 
+                            `<button class="delete-user-button text-red-600 hover:text-red-800 text-sm font-medium transition duration-300" data-user-id="${user.id}">Delete</button>` : 
+                            `<span class="text-gray-400 text-sm">N/A</span>`}
+                        </td>
+                    `;
+                    listEl.appendChild(row);
+                });
+            }
+
+            /**
+             * Renders the 'Manage Items' table for admins
+             */
+            function renderAdminItems() {
+                const listEl = document.getElementById('admin-items-list');
+                if (!listEl) return;
+                listEl.innerHTML = '';
+                const now = new Date().getTime();
+                
+                mockDatabase.products.forEach(item => {
+                    const seller = getUserById(item.sellerId);
+                    const timeLeft = item.endTime - now;
+                    let status = timeLeft > 0 ? 
+                        `<span class="text-green-600">Active</span>` : 
+                        `<span class="text-gray-500">Ended</span>`;
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="py-3 px-4 text-sm font-medium text-gray-900">${item.name}</td>
+                        <td class="py-3 px-4 text-sm text-gray-700">${seller ? seller.name : 'N/A'}</td>
+                        <td class="py-3 px-4 text-sm text-gray-700 font-medium">${formatCurrency(item.currentBid)}</td>
+                        <td class="py-3 px-4 text-sm font-medium ${timeLeft > 0 ? 'text-red-600' : 'text-gray-500'}" data-timer="${item.id}">
+                            ${timeLeft > 0 ? formatTime(timeLeft) : 'Ended'}
+                        </td>
+                        <td class="py-3 px-4 text-sm font-medium">${status}</td>
+                        <td class="py-3 px-4">
+                            <button class="delete-item-button text-red-600 hover:text-red-800 text-sm font-medium transition duration-300" data-item-id="${item.id}">Delete</button>
+                        </td>
+                    `;
+                    listEl.appendChild(row);
+                });
+            }
+
+            /**
+             * Updates all visible timers on the page
+             */
+            function updateAuctionTimers() {
+                if (!currentUser) {
+                    if (auctionInterval) clearInterval(auctionInterval);
+                    return;
+                }
+                
+                const now = new Date().getTime();
+                const timerElements = document.querySelectorAll('[data-timer]');
+                
+                timerElements.forEach(el => {
+                    const itemId = el.dataset.timer;
+                    const item = getProductById(parseInt(itemId));
+                    if (!item) return;
+
+                    const timeLeft = item.endTime - now;
+
+                    if (timeLeft <= 0) {
+                        el.textContent = 'Auction Ended';
+                        el.classList.remove('text-red-600');
+                        el.classList.add('text-gray-500');
+                        
+                        // Disable bid buttons for this item
+                        const bidButtons = document.querySelectorAll(`.bid-button[data-item-id="${itemId}"]`);
+                        bidButtons.forEach(btn => {
+                            btn.textContent = 'Auction Ended';
+                            btn.disabled = true;
+                            btn.classList.add('bg-gray-400', 'cursor-not-allowed', 'opacity-75');
+                            btn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                        });
+                    } else {
+                        el.textContent = formatTime(timeLeft);
+                    }
+                });
+            }
+
+            // === EVENT LISTENERS ===
+
+            // --- Bidding Logic ---
+            document.body.addEventListener('click', (e) => {
+                // Find the closest bid button
+                const bidButton = e.target.closest('.bid-button');
+                if (bidButton && !bidButton.disabled) {
+                    if (currentUser.role !== 'buyer') {
+                        showToast('Only buyers can place bids.', 'error');
+                        return;
+                    }
+                    const itemId = parseInt(bidButton.dataset.itemId);
+                    const item = getProductById(itemId);
+                    if (!item) return;
+
+                    document.getElementById('modal-item-name').textContent = item.name;
+                    document.getElementById('modal-current-bid').textContent = formatCurrency(item.currentBid);
+                    document.getElementById('modal-item-id').value = item.id;
+                    
+                    const timeLeft = item.endTime - new Date().getTime();
+                    document.getElementById('modal-time-left').textContent = formatTime(timeLeft);
+                    
+                    document.getElementById('bid-amount').value = item.currentBid + 1;
+                    document.getElementById('bid-amount').min = item.currentBid + 1;
+                    
+                    bidModal.classList.remove('hidden');
+                }
+
+                // Find the closest delete user button
+                const deleteUserBtn = e.target.closest('.delete-user-button');
+                if (deleteUserBtn) {
+                    const userId = parseInt(deleteUserBtn.dataset.userId);
+                    // NOTE: Swapped confirm() for a simple toast as confirm() is disallowed
+                    mockDatabase.users = mockDatabase.users.filter(u => u.id !== userId);
+                    showToast('User deleted.', 'success');
+                    updateAllUI();
+                }
+
+                // Find the closest delete item button
+                const deleteItemBtn = e.target.closest('.delete-item-button');
+                if (deleteItemBtn) {
+                    const itemId = parseInt(deleteItemBtn.dataset.itemId);
+                    // NOTE: Swapped confirm() for a simple toast as confirm() is disallowed
+                    mockDatabase.products = mockDatabase.products.filter(p => p.id !== itemId);
+                    mockDatabase.bids = mockDatabase.bids.filter(b => b.itemId !== itemId);
+                    showToast('Item deleted.', 'success');
+                    updateAllUI();
+                }
+            });
+
+            closeBidModalBtn.addEventListener('click', () => {
+                bidModal.classList.add('hidden');
+            });
+
+            document.getElementById('bid-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const amount = parseInt(document.getElementById('bid-amount').value);
+                const itemId = parseInt(document.getElementById('modal-item-id').value);
+                const item = getProductById(itemId);
+
+                if (amount <= item.currentBid) {
+                    showToast('Your bid must be higher than the current bid.', 'error');
+                    return;
+                }
+                
+                if (item.sellerId === currentUser.id) {
+                    showToast("You cannot bid on your own item.", "error");
+                    return;
+                }
+
+                const oldHighestBidderId = item.highestBidderId;
+                
+                // Update item
+                item.currentBid = amount;
+                item.highestBidderId = currentUser.id;
+
+                // Add to bids
+                mockDatabase.bids.push({
+                    id: mockDatabase.bids.length + 1,
+                    itemId: itemId,
+                    userId: currentUser.id,
+                    amount: amount,
+                    timestamp: new Date().getTime()
+                });
+
+                // Add activity log
+                mockDatabase.activityLog.push({
+                    id: mockDatabase.activityLog.length + 1,
+                    userId: currentUser.id,
+                    message: `Your bid of ${formatCurrency(amount)} on ${item.name} is the highest.`,
+                    timestamp: new Date().getTime(),
+                    read: false
+                });
+
+                // Notify old bidder
+                if (oldHighestBidderId && oldHighestBidderId !== currentUser.id) {
+                     mockDatabase.activityLog.push({
+                        id: mockDatabase.activityLog.length + 1,
+                        userId: oldHighestBidderId,
+                        message: `You were outbid on ${item.name}.`,
+                        timestamp: new Date().getTime(),
+                        read: false
+                    });
+                }
+                
+                // Notify seller
+                 mockDatabase.activityLog.push({
+                    id: mockDatabase.activityLog.length + 1,
+                    userId: item.sellerId,
+                    message: `New bid of ${formatCurrency(amount)} on ${item.name}.`,
+                    timestamp: new Date().getTime(),
+                    read: false
+                });
+
+                showToast('Bid placed successfully!', 'success');
+                bidModal.classList.add('hidden');
+                updateAllUI();
+            });
+
+            // --- List Item Logic ---
+            document.getElementById('list-item-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const name = document.getElementById('item-name').value;
+                const description = document.getElementById('item-description').value;
+                const basePrice = parseInt(document.getElementById('item-base-price').value);
+                const durationMins = parseInt(document.getElementById('item-duration').value);
+                const imageUrl = document.getElementById('item-image-url').value;
+
+                const newItem = {
+                    id: mockDatabase.products.length + 1,
+                    name,
+                    description,
+                    basePrice,
+                    currentBid: basePrice,
+                    highestBidderId: null,
+                    sellerId: currentUser.id,
+                    imageUrl: imageUrl || `https://placehold.co/600x400/EEE/AAA?text=${name.replace(/\s/g, '+')}`,
+                    endTime: new Date().getTime() + 1000 * 60 * durationMins
+                };
+
+                mockDatabase.products.push(newItem);
+                showToast('Item listed successfully!', 'success');
+                document.getElementById('list-item-form').reset();
+                showPage('my-products');
+            });
+
+            // --- Initial Load ---
+            showView('landing');
+        });
+    </script>
+</body>
+</html>
+
